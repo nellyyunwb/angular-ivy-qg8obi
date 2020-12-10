@@ -13,11 +13,12 @@ export class AppComponent {
 
   ngOnInit() {
     this.cuetext = this.getFileData();
+  }
+
+  ngAfterViewInit() {
     const div = WebVTT.convertCueToDOMTree(window, this.cuetext);
     this.elRef.nativeElement.appendChild(div);
   }
-
-  ngAfterViewInit() {}
 
   getFileData() {
     return this.http.get("/assets/cc1.vtt", { responseType: "text" });
