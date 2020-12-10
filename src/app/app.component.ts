@@ -1,6 +1,6 @@
-import { Component, OnInit, VERSION } from "@angular/core";
+import { Component, ElementRef, OnInit, VERSION } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { tap } from "rxjs/operators";
+import { WebVTT } from "vtt.js";
 
 @Component({
   selector: "my-app",
@@ -8,16 +8,18 @@ import { tap } from "rxjs/operators";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {}
-  vtt1;
+  constructor(private elRef: ElementRef, private http: HttpClient) {}
+  cuetext;
 
   ngOnInit() {
-    this.getFileData().subscribe(response => console.log(response));
+    this.cuetext = this.getFileData();
+    const div = WebVTT.convertCueToDOMTree(window, this.cuetext);
+    this.elRef.nativeElement.appendChild(div);
   }
 
+  ngAfterViewInit() {}
+
   getFileData() {
-    return this.http.get("../assets/cc1.vtt", {
-      responseType: "text"
-    });
+    return this.http.get("/assets/cc1.vtt", { responseType: "text" });
   }
 }

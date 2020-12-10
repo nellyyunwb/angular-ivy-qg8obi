@@ -13,6 +13,8 @@
     "@angular/router": "^10.0.9",
     "rxjs": "^6.6.2",
     "tslib": "^2.0.1",
+    "videojs-vtt.js": "^0.15.2",
+    "vtt.js": "^0.13.0",
     "zone.js": "^0.10.3"
   },
   "scripts": {
