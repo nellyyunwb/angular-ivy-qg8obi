@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, VERSION } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { WebVTT } from "vtt.js";
+import { WebVTT } from "videojs-vtt.js";
 
 @Component({
   selector: "my-app",
