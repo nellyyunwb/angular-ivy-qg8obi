@@ -10,15 +10,30 @@ import { first } from "rxjs/operators";
 })
 export class AppComponent {
   constructor(private elRef: ElementRef, private http: HttpClient) {}
-  cuetext;
 
   async ngOnInit() {}
   async ngAfterViewInit() {
-    this.cuetext = await this.getFileData()
+    const cuetext = await this.getFileData()
       .pipe(first())
       .toPromise();
-    const div = WebVTT.convertCueToDOMTree(window, this.cuetext);
-    this.elRef.nativeElement.appendChild(div);
+    const parser = new WebVTT.Parser(window, WebVTT.StringDecoder());
+    const cues = [];
+    const regions = [];
+    parser.oncue = function(cue) {
+      cues.push(cue);
+    };
+    parser.onregion = function(region) {
+      regions.push(region);
+    };
+    parser.parse(cuetext);
+    parser.flush();
+
+    const div = WebVTT.convertCueToDOMTree(window, cues[0].text);
+    var divs = WebVTT.processCues(
+      window,
+      cues,
+      document.getElementById("overlay")
+    );
   }
 
   getFileData() {
