@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, VERSION } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { WebVTT } from "videojs-vtt.js";
+import { first } from "rxjs/operators";
 
 @Component({
   selector: "my-app",
@@ -11,16 +12,16 @@ export class AppComponent {
   constructor(private elRef: ElementRef, private http: HttpClient) {}
   cuetext;
 
-  ngOnInit() {
-    this.cuetext = this.getFileData();
-  }
-
-  ngAfterViewInit() {
+  async ngOnInit() {}
+  async ngAfterViewInit() {
+    this.cuetext = await this.getFileData()
+      .pipe(first())
+      .toPromise();
     const div = WebVTT.convertCueToDOMTree(window, this.cuetext);
     this.elRef.nativeElement.appendChild(div);
   }
 
   getFileData() {
-    return this.http.get("/assets/cc1.vtt", { responseType: "text" });
+    return this.http.get("../assets/cc1.vtt", { responseType: "text" });
   }
 }
