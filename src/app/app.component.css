@@ -1,3 +1,18 @@
-p {
-  font-family: Lato;
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+video {
+  position: absolute;
+}
+#overlay {
+  width: 640px;
+  height: 200px;
+  position: absolute;
+  z-index: 10;
 }

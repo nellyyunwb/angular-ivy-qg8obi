@@ -28,12 +28,22 @@ export class AppComponent {
     parser.parse(cuetext);
     parser.flush();
 
-    const div = WebVTT.convertCueToDOMTree(window, cues[0].text);
-    var divs = WebVTT.processCues(
-      window,
-      cues,
-      document.getElementById("overlay")
-    );
+    var video = document.querySelector("video");
+    var ct = video.currentTime;
+
+    video.addEventListener("timeupdate", function() {
+      var ct = video.currentTime;
+
+      var activeCues = cues.filter(function(cue) {
+        return cue.startTime <= ct && cue.endTime >= ct;
+      });
+
+      WebVTT.processCues(
+        window,
+        activeCues,
+        document.getElementById("overlay")
+      );
+    });
   }
 
   getFileData() {
