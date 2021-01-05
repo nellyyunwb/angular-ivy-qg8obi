@@ -25,6 +25,7 @@ export class AppComponent {
     parser.onregion = function(region) {
       regions.push(region);
     };
+
     parser.parse(cuetext);
     parser.flush();
 
